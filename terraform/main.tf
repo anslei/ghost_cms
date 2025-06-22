@@ -28,7 +28,7 @@ resource "aws_instance" "ghost" {
 }
 
 resource "aws_security_group" "ghost_sg" {
-  name        = "ghost_sg"
+  name_prefix = "ghost_sg_"
   description = "Allow HTTP and SSH"
 
   ingress {
