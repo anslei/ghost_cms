@@ -18,18 +18,18 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
 
-      - name: Terraform Init
-        run: terraform -chdir=terraform init
-
-      
-      - name: Import existing SG if it exists
-        run: TF_VAR_key_name=${{ secrets.AWS_KEY_NAME }} terraform -chdir=terraform import aws_security_group.ghost_sg sg-02da91f494abe8def || true
-              
-      - name: Cache Terraform State
+      - name: Cache Terraform state
         uses: actions/cache@v4
         with:
-          path: terraform.tfstate
+          path: |
+            terraform.tfstate
+            terraform.tfstate.backup
           key: ${{ runner.os }}-ghostcms-tfstate
+          restore-keys: |
+            ${{ runner.os }}-ghostcms-
+
+      - name: Terraform Init
+        run: terraform -chdir=terraform init
       
 
       - name: Terraform Apply
