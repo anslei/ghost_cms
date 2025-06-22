@@ -48,7 +48,8 @@ Type=simple
 WorkingDirectory=/var/www/ghost
 User=998
 Environment="NODE_ENV=development"
-ExecStart=/usr/bin/node /usr/local/bin/ghost run
+Environment="HOME=/var/www/ghost"
+ExecStart=/usr/bin/env HOME=/var/www/ghost ghost run
 Restart=always
 
 [Install]

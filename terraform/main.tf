@@ -25,6 +25,11 @@ resource "aws_instance" "ghost" {
   tags = {
     Name = "GhostCMS"
   }
+
+  lifecycle {
+    prevent_destroy = true
+  }
+
 }
 
 resource "aws_security_group" "ghost_sg" {
