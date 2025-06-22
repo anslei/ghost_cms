@@ -25,8 +25,11 @@ jobs:
       - name: Import existing SG if it exists
         run: TF_VAR_key_name=${{ secrets.AWS_KEY_NAME }} terraform -chdir=terraform import aws_security_group.ghost_sg sg-02da91f494abe8def || true
               
-      - name: Terraform Destroy
-        run: terraform -chdir=terraform destroy -auto-approve -var="key_name=${{ secrets.AWS_KEY_NAME }}" -target=aws_instance.GhostCMS
+      - name: Cache Terraform State
+        uses: actions/cache@v4
+        with:
+          path: terraform.tfstate
+          key: ${{ runner.os }}-ghostcms-tfstate
       
 
       - name: Terraform Apply
