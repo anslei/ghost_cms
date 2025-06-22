@@ -1,8 +1,9 @@
 name: Semgrep SAST
 
 on:
-    push:
-      branches: [main]
+  push:
+    branches: [main]
+  pull_request:
 
 jobs:
   semgrep:
@@ -11,9 +12,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Run Semgrep
+      - name: Run Semgrep SAST
         uses: returntocorp/semgrep-action@v1
         with:
           publishToken: ${{ secrets.SEMGREP_APP_TOKEN }}
+          auditOn: push
+          generateSarif: true
         env:
+          SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
           SEMGREP_SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
