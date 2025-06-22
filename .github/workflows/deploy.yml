@@ -24,6 +24,9 @@ jobs:
       
       - name: Import existing SG if it exists
         run: TF_VAR_key_name=${{ secrets.AWS_KEY_NAME }} terraform -chdir=terraform import aws_security_group.ghost_sg sg-02da91f494abe8def || true
+              
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve -var="key_name=ghost-key"
       
 
       - name: Terraform Apply
