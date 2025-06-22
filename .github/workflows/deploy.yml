@@ -21,5 +21,11 @@ jobs:
       - name: Terraform Init
         run: terraform -chdir=terraform init
 
+      
+      - name: Import existing SG if it exists
+        run: |
+          terraform -chdir=terraform init import aws_security_group.ghost_sg sg-0123456789abcdef0 || true
+      
+
       - name: Terraform Apply
         run: terraform -chdir=terraform apply -auto-approve -var="key_name=${{ secrets.AWS_KEY_NAME }}"
