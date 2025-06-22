@@ -1,8 +1,8 @@
 name: Semgrep SAST
 
 on:
-  pull_request:
-    paths: ["**.tf", "**.sh"]
+    push:
+      branches: [main]
 
 jobs:
   semgrep:
