@@ -22,8 +22,10 @@ echo "📁 Installing Ghost CMS in /var/www/ghost..."
 cd /var/www/ghost
 sudo -u ghost HOME=/var/www/ghost ghost install local --no-prompt --no-stack
 
-echo "🌐 Updating Ghost host to 0.0.0.0..."
+echo "🌐 Updating Ghost host to 0.0.0.0 and port to 2368"
 sudo -u ghost HOME=/var/www/ghost ghost config set server.host 0.0.0.0
+sudo -u ghost HOME=/var/www/ghost ghost config set server.port 2368
+
 
 echo "🌍 Detecting public IP and setting Ghost URL..."
 IP=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
@@ -34,5 +36,28 @@ sudo -u ghost HOME=/var/www/ghost ghost restart
 
 echo "🧪 Verifying Ghost is up and running..."
 sudo -u ghost HOME=/var/www/ghost ghost ls
+
+echo "📝 Creating systemd service for Ghost CMS..."
+sudo tee /etc/systemd/system/ghost-local.service > /dev/null <<EOF
+[Unit]
+Description=Ghost systemd service for blog: ghost-local
+Documentation=https://ghost.org/docs/
+
+[Service]
+Type=simple
+WorkingDirectory=/var/www/ghost
+User=998
+Environment="NODE_ENV=development"
+ExecStart=/usr/bin/node /usr/local/bin/ghost run
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+echo "🔄 Enabling and starting Ghost systemd service..."
+sudo systemctl daemon-reload
+sudo systemctl enable ghost-local
+sudo systemctl start ghost-local
 
 echo "✅ Ghost CMS is now running at: http://$IP:2368"
