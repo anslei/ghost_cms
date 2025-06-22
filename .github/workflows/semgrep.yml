@@ -14,7 +14,6 @@ jobs:
       - name: Run Semgrep
         uses: returntocorp/semgrep-action@v1
         with:
-          config: "p/default"
           publishToken: ${{ secrets.SEMGREP_APP_TOKEN }}
         env:
           SEMGREP_SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
