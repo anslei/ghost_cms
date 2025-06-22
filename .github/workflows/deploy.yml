@@ -23,7 +23,7 @@ jobs:
 
       
       - name: Import existing SG if it exists
-        run: TF_VAR_key_name=ghost-key terraform -chdir=terraform init import aws_security_group.ghost_sg sg-02da91f494abe8def || true
+        run: TF_VAR_key_name=${{ secrets.AWS_KEY_NAME }} terraform -chdir=terraform import aws_security_group.ghost_sg sg-02da91f494abe8def || true
       
 
       - name: Terraform Apply
