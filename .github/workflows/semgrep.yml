@@ -1,4 +1,4 @@
-name: Semgrep SASTs
+name: Semgrep SAST
 
 on:
   push:
